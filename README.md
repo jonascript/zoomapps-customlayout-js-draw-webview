@@ -4,6 +4,11 @@
 
 Demonstrates issue loading X domain scripts in camera webview.
 
+DEMO VIDEO:
+https://user-images.githubusercontent.com/3044846/194625230-fbb57524-f814-490d-96ff-6b964b62d518.mp4
+
+
+
 ## Prerequisites
 
 1. [Node JS](https://nodejs.org/en/)
