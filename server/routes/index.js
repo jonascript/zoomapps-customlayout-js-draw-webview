@@ -23,6 +23,8 @@ router.get('/', async (req, res, next) => {
         return res.render('index', {
             isZoom,
             title: `Hello ${name}`,
+            clientADomain: process.env.CLIENT_A_DOMAIN,
+            clientBDomain: process.env.CLIENT_B_DOMAIN,
         });
     } catch (e) {
         next(handleError(e));
