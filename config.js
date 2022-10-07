@@ -6,11 +6,14 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const config = process.env;
+
 const deps = [
     'ZM_CLIENT_ID',
     'ZM_CLIENT_SECRET',
     'ZM_REDIRECT_URL',
     'SESSION_SECRET',
+    'CLIENT_A_DOMAIN',
+    'CLIENT_B_DOMAIN',
 ];
 
 // Check that we have all our config dependencies
@@ -39,6 +42,8 @@ export const zoomApp = {
     clientSecret: config.ZM_CLIENT_SECRET,
     redirectUrl: config.ZM_REDIRECT_URL,
     sessionSecret: config.SESSION_SECRET,
+    clientDomainA: config.CLIENT_DOMAIN_A,
+    clientDomainB: config.CLIENT_DOMAIN_B,
 };
 
 // Zoom App Info

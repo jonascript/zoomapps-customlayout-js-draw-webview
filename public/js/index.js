@@ -2,17 +2,17 @@ import app from './lib/immersive-app.js';
 import socket from './lib/socket.js';
 import { draw, drawQuadrant } from './lib/canvas.js';
 
-const colors = {
-    black: '#131619',
-    blue: '#0e72ed',
-    green: '#4b9d64',
-    red: '#e8173d',
-    yellow: '#ffbf39',
-};
+// const colors = {
+//     black: '#131619',
+//     blue: '#0e72ed',
+//     green: '#4b9d64',
+//     red: '#e8173d',
+//     yellow: '#ffbf39',
+// };
 
 const settings = {
     cast: [],
-    color: colors.blue,
+    // color: colors.blue,
     topic: 'Hey there 👋 You can create and select your own topic from the home page',
     uuid: '',
 };
@@ -33,19 +33,19 @@ const controls = document.getElementById('controls');
 const hostControls = document.getElementById('hostControls');
 
 // Color Selection
-const colorSel = document.getElementById('colorSel');
-const custColorInp = document.getElementById('custColorInp');
+// const colorSel = document.getElementById('colorSel');
+// const custColorInp = document.getElementById('custColorInp');
 
 // Cast selection
-const castSel = document.getElementById('castSel');
+// const castSel = document.getElementById('castSel');
 const setCastBtn = document.getElementById('setCastBtn');
 
 const helpMsg = document.getElementById('helpMsg');
 
 // Topic Selection
-const topicBtn = document.getElementById('topicBtn');
-const topicInp = document.getElementById('topicInp');
-const topicList = document.getElementById('topicList');
+// const topicBtn = document.getElementById('topicBtn');
+// const topicInp = document.getElementById('topicInp');
+// const topicList = document.getElementById('topicList');
 
 /**
  * Remove the hidden class from an element
@@ -209,17 +209,18 @@ async function drawCastMember(idx, p) {
  * @param {String} color - UI color
  * @return {Promise<void>}
  */
-async function onUpdate({ topic, participants, color }) {
+async function onUpdate({ topic, participants }) {
     const changes = {
         topic: topic && settings.topic !== topic,
-        color: color && settings.color !== color,
+        color: false,
+        // color: color && settings.color !== color,
         participants: participants && settings.cast !== participants,
     };
 
     if (changes.topic) settings.topic = topic;
 
     if (changes.color) {
-        settings.color = color;
+        // settings.color = color;
 
         // sync this color change with the Zoom Client
         await app.sdk.postMessage({ color: settings.color });
@@ -252,19 +253,19 @@ async function onUpdate({ topic, participants, color }) {
  * Set the participants in the Cast Selection element
  * @param {Array.<Object>} participants - Participant objects from the Zoom JS SDK
  */
-function setCastSelect(participants) {
-    for (let i = 0; i < castSel.options.length; i++) castSel.remove(i);
+// function setCastSelect(participants) {
+//     for (let i = 0; i < castSel.options.length; i++) castSel.remove(i);
 
-    for (const p of participants) {
-        const prefix = p.role === 'host' ? '[You] ' : '';
-        const opt = document.createElement('option');
+//     for (const p of participants) {
+//         const prefix = p.role === 'host' ? '[You] ' : '';
+//         const opt = document.createElement('option');
 
-        opt.value = p.participantId;
-        opt.text = `${prefix}${p.screenName}`;
+//         opt.value = p.participantId;
+//         opt.text = `${prefix}${p.screenName}`;
 
-        castSel.appendChild(opt);
-    }
-}
+//         castSel.appendChild(opt);
+//     }
+// }
 
 /**
  * Hide and Show elements based on the Zoom Running Context
@@ -287,7 +288,7 @@ function showElements() {
 
     if (app.userIsHost) {
         showEl(hostControls);
-        setCastSelect(app.participants);
+        // setCastSelect(app.participants);
     }
 }
 
@@ -300,7 +301,7 @@ function createTopic(text) {
     a.classList.add(classes.panel);
 
     const topicQuery = `a.${classes.panel}`;
-    const idx = topicList.querySelectorAll(topicQuery).length;
+    // const idx = topicList.querySelectorAll(topicQuery).length;
 
     a.innerText = text;
     a.onclick = async (e) => {
@@ -316,7 +317,7 @@ function createTopic(text) {
 
         await app.sdk.postMessage({
             activeTopic: settings.topic,
-            topicIndex: idx,
+            // topicIndex: idx,
         });
 
         for (const tag of siblings)
@@ -324,7 +325,7 @@ function createTopic(text) {
             else tag.classList.add(classes.bold);
     };
 
-    topicList.appendChild(a);
+    // topicList.appendChild(a);
 }
 
 /**
@@ -332,28 +333,28 @@ function createTopic(text) {
  * @param {String} text - topic text
  * @param {Number} idx - index of the topic in the topicList
  */
-function setTopic(idx, text) {
-    const topics = topicList.querySelectorAll('a');
+// function setTopic(idx, text) {
+//     // const topics = topicList.querySelectorAll('a');
 
-    for (let i = 0; i < topics.length; i++) {
-        const topic = topics[i];
+//     for (let i = 0; i < topics.length; i++) {
+//         const topic = topics[i];
 
-        if (i === idx) {
-            topic.classList.add(classes.bold);
-            continue;
-        }
+//         if (i === idx) {
+//             topic.classList.add(classes.bold);
+//             continue;
+//         }
 
-        topic.classList.remove(classes.bold);
-    }
+//         topic.classList.remove(classes.bold);
+//     }
 
-    settings.topic = text;
+//     settings.topic = text;
 
-    // sync active topic with other participants
-    socket.emit('sendUpdate', {
-        meetingUUID: settings.uuid,
-        topic: settings.topic,
-    });
-}
+//     // sync active topic with other participants
+//     socket.emit('sendUpdate', {
+//         meetingUUID: settings.uuid,
+//         topic: settings.topic,
+//     });
+// }
 
 /*  Zoom Event Handlers */
 
@@ -397,45 +398,43 @@ app.sdk.onParticipantChange(async ({ participants }) => {
     }
 
     await app.sdk.postMessage({ participants: app.participants });
-    setCastSelect(app.participants);
+    // setCastSelect(app.participants);
 });
 
 app.sdk.onMessage(async ({ payload }) => {
     const {
         addTopic,
-        color,
+        // color,
         updateCast,
         ended,
         isHost,
         participants,
         activeTopic,
-        topicIndex,
+        // topicIndex,
         uuid,
     } = payload;
 
     // If we have a UUID the meeting was started
     if (uuid) {
-        showEl(controls);
+        // showEl(controls);
         settings.uuid = uuid;
     }
 
     // hide controls when the meeting ends
     if (ended) {
-        hideEl(controls);
+        // hideEl(controls);
         hideEl(hostControls);
     }
 
     // if the user is the host show host controls
     if (isHost) {
         showEl(hostControls);
-        setCastSelect(app.participants);
     }
 
     // sync the list of participants
     if (participants) {
         helpMsg.classList.add(classes.hidden);
         controls.classList.remove(classes.hidden);
-        setCastSelect(participants);
     }
 
     // sync the list of displayed participants and draw them
@@ -456,103 +455,45 @@ app.sdk.onMessage(async ({ payload }) => {
         }
     }
 
-    // sync the UI color
-    if (color) {
-        const idx = Object.values(colors).indexOf(color);
-        const isCustom = idx === -1;
-
-        settings.color = color;
-
-        if (isCustom) {
-            custColorInp.value = color;
-            colorSel.setAttribute('disabled', '');
-        } else {
-            colorSel.removeAttribute('disabled');
-            colorSel.value = Object.keys(colors)[idx];
-        }
-
-        if (app.isImmersive) await render();
-    }
-
     // sync a new topic
     if (addTopic) createTopic(addTopic);
 
     // set the default topic
     if (activeTopic) {
-        setTopic(topicIndex, activeTopic);
+        // setTopic(topicIndex, activeTopic);
         if (app.isImmersive) await drawTopic();
     }
 });
 
 /* DOM Event Handlers */
 
-colorSel.onchange = async (e) => {
-    if (custColorInp.innerText.length > 0) return;
+// topicBtn.onclick = async () => {
+//     const topic = topicInp.value;
 
-    const color = colors[e.target.value];
-    if (!color) return;
+//     if (!topic) return;
 
-    settings.color = color;
+//     createTopic(topic);
 
-    // sync the color change with the Zoom Client
-    await app.sdk.postMessage({
-        color,
-    });
-
-    // the host can override the color for everyone else
-    socket.emit('sendUpdate', {
-        color: settings.color,
-        meetingUUID: settings.uuid,
-    });
-};
-
-custColorInp.onchange = async (e) => {
-    const { value } = e.target;
-    if (value.length > 0) {
-        settings.color = value;
-
-        colorSel.setAttribute('disabled', '');
-
-        // sync the color change with the Zoom Client
-        await app.sdk.postMessage({
-            color: settings.color,
-        });
-
-        if (app.userIsHost)
-            socket.emit('sendUpdate', {
-                color: settings.color,
-                meetingUUID: settings.uuid,
-            });
-    } else colorSel.removeAttribute('disabled');
-};
-
-topicBtn.onclick = async () => {
-    const topic = topicInp.value;
-
-    if (!topic) return;
-
-    createTopic(topic);
-
-    // sync the new topic with the Zoom Client
-    await app.sdk.postMessage({ addTopic: topic });
-};
+//     // sync the new topic with the Zoom Client
+//     await app.sdk.postMessage({ addTopic: topic });
+// };
 
 setCastBtn.onclick = async () => {
-    const selected = castSel.querySelectorAll('option:checked');
+    // const selected = castSel.querySelectorAll('option:checked');
     const hasUI = app.drawnImages.length > 0;
 
     const cast = [];
 
-    for (let i = 0; i < 3 && i < selected.length; i++) {
-        const id = selected[i].value;
+    // for (let i = 0; i < 3 && i < selected.length; i++) {
+    //     const id = selected[i].value;
 
-        if (!id) continue;
+    //     if (!id) continue;
 
-        cast.push(id);
+    //     cast.push(id);
 
-        // only redraw the participant if we have the UI
-        if (hasUI) await drawCastMember(i, id);
-    }
+    //     // only redraw the participant if we have the UI
+    //     if (hasUI) await drawCastMember(i, id);
+    // }
 
     settings.cast = cast;
 
@@ -567,7 +508,7 @@ setCastBtn.onclick = async () => {
     socket.emit('sendUpdate', {
         participants: settings.cast,
         topic: settings.topic,
-        color: settings.color,
+        // color: settings.color,
         meetingUUID: settings.uuid,
     });
 };

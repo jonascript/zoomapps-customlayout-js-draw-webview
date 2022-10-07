@@ -1,7 +1,8 @@
-# Zoom App Custom Layout Sample
+# ~Zoom App Custom Layout Sample~
 
-This Zoom App sample uses Node.js + Express to demonstrate how you can use the Zoom Layers API to create an Immersive
-Zoom App that captivates your audience and presenters alike with a custom layout.
+# DrawWebView Zoom App Cross Domain Issue Demo
+
+Demonstrates issue loading X domain scripts in camera webview.
 
 ## Prerequisites
 
@@ -19,16 +20,20 @@ Open your terminal:
 
 ```bash
 # Clone down this repository
-git clone git@github.com/zoom/zoomapps-customlayout-js
+git clone git@github.com/zoom/zoomapps-customlayout-js-draw-webview
 
 # navigate into the cloned project directory
-cd zoomapps-customlayout-js
+cd zoomapps-customlayout-js-draw-webview
+
+# Open ngrok.yml and add your NGROK AUTH TOKEN
+# You will need at least a free ngrok account to do this.
+# This enables multiple ngrok urls to run at once
 
 # run NPM to install the app dependencies
 npm install
 
 # initialize your ngrok session
-ngrok http 3000
+ngrok start --config=ngrok.yml --all
 ```
 
 ### Create your Zoom App
@@ -59,24 +64,24 @@ Redirect URL for OAuth: https://xxxxx.ngrok.io/auth
 
 #### OAuth allow list
 
-- `https://example.ngrok.io`
+-   `https://example.ngrok.io`
 
 #### Domain allow list
 
-- `appssdk.zoom.us`
-- `ngrok.io`
+-   `appssdk.zoom.us`
+-   `ngrok.io`
 
 ### Config: Information
 
 The following information is required to activate your application:
 
-- Basic Information
-    - App name
-    - Short description
-    - Long description (entering a short message here is fine for now)
-- Developer Contact Information
-    - Name
-    - Email address
+-   Basic Information
+    -   App name
+    -   Short description
+    -   Long description (entering a short message here is fine for now)
+-   Developer Contact Information
+    -   Name
+    -   Email address
 
 > NOTE: if you intend to publish your application on the Zoom Apps Marketplace, more information will be required in this section before submitting.
 
@@ -87,32 +92,33 @@ sections:
 
 #### APIs
 
-- clearImage,
-- clearParticipant,
-- closeRenderingContext
-- connect
-- rawImage
-- drawParticipant
-- getMeetingParticipants
-- getMeetingUUID
-- getRunningContext
-- getUserContext
-- postMessage
-- runRenderingContext
-- sendAppInvitationToAllParticipants
+-   clearImage,
+-   clearParticipant,
+-   closeRenderingContext
+-   connect
+-   rawImage
+-   drawParticipant
+-   getMeetingParticipants
+-   getMeetingUUID
+-   getRunningContext
+-   getUserContext
+-   postMessage
+-   runRenderingContext
+-   sendAppInvitationToAllParticipants
 
 #### Events
 
-- onConnect
-- onMeeting
-- onMessage
-- onMyMediaChange
-- onParticipantChange
+-   onConnect
+-   onMeeting
+-   onMessage
+-   onMyMediaChange
+-   onParticipantChange
 
 ### Scopes
 
 Ensure that the following scope is selected on the Scopes tab:
-- `zoomapp:inmeeting`
+
+-   `zoomapp:inmeeting`
 
 ### Config `.env`
 
@@ -128,6 +134,11 @@ ZM_CLIENT_SECRET=[app_client_secret]
 
 # Redirect URI set for your app in the Zoom Marketplace
 ZM_REDIRECT_URL=https://[xxxx-xx-xx-xxx-x].ngrok.io/auth
+
+CLIENT_A_DOMAIN=https://[xxxx-xx-xx-xxx-x].ngrok.io
+
+CLIENT_B_DOMAIN=https://[xxxx-xx-xx-xxx-x].ngrok.io
+
 ```
 
 #### Zoom for Government
@@ -136,9 +147,9 @@ If you are a [Zoom for Government (ZfG)](https://www.zoomgov.com/) customer you 
 the base URL used for Zoom. This will allow you to adjust to the different Marketplace and API Base URLs used by ZfG
 customers.
 
-**Marketplace URL:** marketplace.*zoomgov.com*
+**Marketplace URL:** marketplace._zoomgov.com_
 
-**API Base URL:** api.*zoomgov.com*
+**API Base URL:** api._zoomgov.com_
 
 ## Start the App
 
@@ -147,7 +158,12 @@ customers.
 Run the `dev` npm script to start in development mode using a Docker container.
 
 ```shell
-npm run dev
+
+In one terminal window do
+PORT=3000 npm run dev
+
+IN a second terminal window do
+PORT=3001 npm run dev
 ```
 
 The `dev` script will:
@@ -169,7 +185,7 @@ NODE_ENV=production npm start
 
 # Windows
 set NODE_ENV=production && npm start
-````
+```
 
 ## Usage
 
@@ -206,4 +222,5 @@ our [Developer Forum](https://devforum.zoom.us). Priority support is also availa
 with [Premier Developer Support](https://zoom.us/docs/en-us/developer-support-plans.html) plans.
 
 ### Documentation
+
 Make sure to review [our documentation](https://marketplace.zoom.us/docs/zoom-apps/introduction/) as a reference when building your Zoom Apps.

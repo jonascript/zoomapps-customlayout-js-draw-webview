@@ -155,7 +155,20 @@ class ImmersiveApp {
             throw new Error('Immersive Mode can only be used in meetings');
 
         // Start rendering Immersive Mode
-        await this.sdk.runRenderingContext({ view: 'immersive' });
+        // await this.sdk.runRenderingContext({ view: 'immersive' });
+
+        // Start rendering Camera Mode
+        await this.sdk.runRenderingContext({ view: 'camera' });
+
+        setTimeout(() => {
+            this.sdk.drawWebView({
+                x: 0,
+                y: 0,
+                width: 1280,
+                height: 720,
+                zIndex: 2,
+            });
+        }, 5000);
     }
 
     async stop() {

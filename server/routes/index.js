@@ -1,6 +1,6 @@
 import express from 'express';
 import { handleError, sanitize } from '../helpers/routing.js';
-import { contextHeader, getAppContext } from '../helpers/cipher.js';
+// import { contextHeader, getAppContext } from '../helpers/cipher.js';
 import { getInstallURL } from '../helpers/zoom-api.js';
 import session from '../session.js';
 
@@ -14,9 +14,10 @@ router.get('/', async (req, res, next) => {
     try {
         sanitize(req);
 
-        const header = req.header(contextHeader);
+        // const header = req.header(contextHeader);
 
-        const isZoom = header && getAppContext(header);
+        // const isZoom = header && getAppContext(header);
+        const isZoom = true;
         const name = isZoom ? 'Zoom' : 'Browser';
 
         return res.render('index', {

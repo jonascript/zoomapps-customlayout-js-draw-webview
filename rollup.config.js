@@ -32,6 +32,14 @@ const plugins = [
                 src: `${src}/{css,img}`,
                 dest,
             },
+            {
+                src: `${src}/js/client-a-script.js`,
+                dest: `${dest}/js/test`,
+            },
+            {
+                src: `${src}/js/client-b-script.js`,
+                dest: `${dest}/js/test`,
+            },
         ],
     }),
     babel({

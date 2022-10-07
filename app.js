@@ -30,6 +30,10 @@ app.set('view engine', 'pug');
 app.set('views', viewDir);
 app.locals.basedir = staticDir;
 
+console.log('CLIENT A DOMAIN', process.env.CLIENT_A_DOMAIN);
+
+console.log('CLIENT B DOMAIN', process.env.CLIENT_B_DOMAIN);
+
 // HTTP
 app.set('port', port);
 
@@ -68,7 +72,13 @@ const headers = {
         directives: {
             'default-src': 'self',
             styleSrc: ["'self'"],
-            scriptSrc: ["'self'", 'https://appssdk.zoom.us/sdk.min.js'],
+            scriptSrc: [
+                "'self'",
+                '*',
+                'https://appssdk.zoom.us/sdk.min.js',
+                process.env.CLIENT_A_DOMAIN,
+                process.env.CLIENT_B_DOMAIN,
+            ],
             imgSrc: ["'self'", `https://${redirectHost}`],
             'connect-src': ["'self'", `wss://${redirectHost}`],
             'base-uri': 'self',
@@ -78,6 +88,7 @@ const headers = {
 };
 
 app.use(helmet(headers));
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 
 app.use(express.json());
 app.use(compression());

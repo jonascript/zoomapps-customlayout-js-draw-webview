@@ -1,0 +1,14 @@
+authtoken: #YOUR NGROK AUTH TOKEN GOES HERE
+tunnels:
+    server:
+        addr: 3000
+        proto: http
+        schemes:
+            - https
+    poc:
+        addr: 3001
+        proto: http
+        schemes:
+            - https
+version: '2'
+region: us
